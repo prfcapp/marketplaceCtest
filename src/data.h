@@ -31,9 +31,11 @@ struct order_node {
 
 // Function prototypes for working with orders
 struct order* create_order(const char* product_name, int price, int quantity, enum order_type type);
+void add_order(struct order_node* head, struct order* o);
 void free_order(struct order* o);
 void match_order(struct order* o, struct order* existing_orders, int num_orders);
 void print_all_orders(struct order_node *head);
 void print_order(struct order* o);
+
 
 #endif // DATA_H

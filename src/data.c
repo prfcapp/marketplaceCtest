@@ -38,6 +38,11 @@ struct order* create_order(const char* product_name, int price, int quantity, en
     return o;
 }
 
+void add_order(struct order_node* head, struct order* o){
+    
+    return;
+}
+
 // Frees the memory associated with an order
 void free_order(struct order* o) {
     if (!o) return;

@@ -47,11 +47,10 @@ int parse_order_input(const char* input, struct order** new_order) {
 int main() {
     // Pre-populate some orders
     struct order_node* orders[100]; // Array to hold the orders
-    int order_count = 0;
-
+    
     // Pre-populate example orders
-    orders[order_count++] = create_order("Laptop", 99999, 1, BUY);  // $999.99 for 1 Laptop
-    orders[order_count++] = create_order("Smartphone", 50000, 2, SELL); // $500.00 for 2 Smartphones
+    struct order_node temp = create_order("Laptop", 99999, 1, BUY);  // $999.99 for 1 Laptop
+    create_order("Smartphone", 50000, 2, SELL); // $500.00 for 2 Smartphones
 
     // Display the pre-populated orders
     printf("Pre-populated orders:\n");

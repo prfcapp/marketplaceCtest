@@ -1,3 +1,7 @@
+/*
+specifically just the data types and what not. 
+
+*/
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -72,4 +76,28 @@ void match_order(struct order* new_order, struct order* existing_orders, int num
             if (new_order->status == FULFILLED) break;
         }
     }
+}
+
+
+
+// print order
+void print_all_orders(struct order_node* head){
+    printf("\nAll orders:\n");
+    struct order_node *current = head;
+    while (current != NULL) {
+        struct order *o = &current->data;
+        print_order(o);
+        current = current->next;
+    }
+}
+
+
+void print_order(struct order* o){
+    printf("Order ID: %d\n", o->order_id);
+    printf("Order Type: %s\n", o->type);
+    printf("Product: %s\n", o->product);
+    printf("Quantity: %d\n", o->quantity);
+    printf("Price: $%.2f\n", o->price / 100.0);
+    printf("Order Status: %d\n\n", o->status);
+    return;
 }

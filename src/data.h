@@ -22,11 +22,18 @@ struct order {
     enum order_type type;
 };
 
+struct order_node {
+    struct order data;
+    struct order_node *next;
+};
+
 
 
 // Function prototypes for working with orders
 struct order* create_order(const char* product_name, int price, int quantity, enum order_type type);
 void free_order(struct order* o);
 void match_order(struct order* o, struct order* existing_orders, int num_orders);
+void print_all_orders(struct order_node *head);
+void print_order(struct order* o);
 
 #endif // DATA_H

@@ -20,22 +20,22 @@ struct order {
     time_t order_time;
     enum order_status status;
     enum order_type type;
+    struct order *next;
 };
 
 struct order_node {
     struct order data;
-    struct order_node *next;
 };
 
 
 
 // Function prototypes for working with orders
 struct order* create_order(const char* product_name, int price, int quantity, enum order_type type);
-void add_order(struct order_node* head, struct order* o);
+void add_order(struct order** head, struct order* o);
 void free_order(struct order* o);
 void match_order(struct order* o, struct order* existing_orders, int num_orders);
-void print_all_orders(struct order_node *head);
+void print_all_orders(struct order** head);
 void print_order(struct order* o);
-
+const char *order_type_to_string(enum order_type type);
 
 #endif // DATA_H

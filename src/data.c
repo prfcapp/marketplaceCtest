@@ -38,7 +38,7 @@ struct order* create_order(const char* product_name, int price, int quantity, en
     return o;
 }
 
-void add_order(struct order_node* head, struct order* o){
+void add_order(struct order** head, struct order* o){
     
     return;
 }
@@ -86,20 +86,26 @@ void match_order(struct order* new_order, struct order* existing_orders, int num
 
 
 // print order
-void print_all_orders(struct order_node* head){
+void print_all_orders(struct order** head){
     printf("\nAll orders:\n");
-    struct order_node *current = head;
+    struct order* current = *head;
     while (current != NULL) {
-        struct order *o = &current->data;
-        print_order(o);
+        print_order(current);
         current = current->next;
     }
 }
 
+const char *order_type_to_string(enum order_type type) {
+    switch (type) {
+        case BUY: return "BUY";
+        case SELL: return "SELL";
+        default: return "UNKNOWN";
+    }
+}
 
 void print_order(struct order* o){
     printf("Order ID: %d\n", o->order_id);
-    printf("Order Type: %s\n", o->type);
+    printf("Order Type: %s\n", order_type_to_string(o->type));
     printf("Product: %s\n", o->product);
     printf("Quantity: %d\n", o->quantity);
     printf("Price: $%.2f\n", o->price / 100.0);

@@ -14,7 +14,7 @@ famous last words.
 
 
 
-int parse_order_input(const char* input, struct order** new_order) {
+int parse_order_input(const char* input, struct order** head) {
     // test this shit work
     printf("test purpose: printing parse order: %s\n", input);
 
@@ -38,28 +38,36 @@ int parse_order_input(const char* input, struct order** new_order) {
         return 0; // Invalid order type
     }
 
+
     // Create the order using the parsed values
-    *new_order = create_order(product, price, quantity, type);
-    return *new_order != NULL;
+    struct order* new_order = create_order(product, price, quantity, type);
+    struct order* current = *head;
+
+    while(current->next!=NULL){
+        current = current->next;
+    }
+    current->next = new_order;
+
+    return (new_order != NULL);
 }
 
 
 int main() {
     // Pre-populate some orders
-    struct order_node* orders[100]; // Array to hold the orders
+    struct order* orders; // Array to hold the orders
     
     // Pre-populate example orders
-    struct order_node temp = create_order("Laptop", 99999, 1, BUY);  // $999.99 for 1 Laptop
-    create_order("Smartphone", 50000, 2, SELL); // $500.00 for 2 Smartphones
+    struct order* temp = create_order("Laptop", 99999, 1, BUY);  // $999.99 for 1 Laptop
+
+    //create_order("Smartphone", 50000, 2, SELL); // $500.00 for 2 Smartphones
 
     // Display the pre-populated orders
     printf("Pre-populated orders:\n");
-    print_all_orders(*orders);
+    print_all_orders(&orders);
 
     // Take user input for new orders
     char input[256]; // Buffer for user input
-    struct order_node* new_order = NULL;
-
+    
     printf("\nEnter new orders in the format: type,product,quantity,price\n");
     while (1) {
        printf("Enter order (or 'exit' to quit, 'help' for instructions): ");
@@ -75,16 +83,16 @@ int main() {
         } else if (strcmp(input, "help") == 0) {
             print_help(); // Show help message
         } else if (strcmp(input, "show") == 0) {
-            print_all_orders(*orders); // Show help message
-        }else if (parse_order_input(input, &(new_order->data))) {
-            orders[order_count++] = new_order;
-            struct order* temp = &(new_order->data); 
+            print_all_orders(&orders); // Show help message
+        }else if (parse_order_input(input, &orders)) {
+            struct order* current = orders; 
             printf("Order added: Order ID: %d, Type: %s, Product: %s, Price: $%d.%02d, Quantity: %d\n",
-                    temp->order_id,
-                    temp->type == BUY ? "BUY" : "SELL",
-                    temp->product,
-                    temp->price / 100, temp->price % 100,
-                    temp->quantity);
+                    current->order_id,
+                    current->type == BUY ? "BUY" : "SELL",
+                    current->product,
+                    current->price / 100, temp->price % 100,
+                    current->quantity);
+            current = NULL; 
         } else {
             printf("Invalid input format. Please try again.\n");
         }
@@ -94,9 +102,15 @@ int main() {
 
 
     // Free the memory for orders
-    for (int i = 0; i < order_count; i++) {
-        free_order(orders[i]);
+    struct order* remover = orders;
+    struct order* remover2 = NULL;
+    while(remover->next != NULL) {
+        remover2 = remover->next;
+        free_order(remover);
+        remover = remover2;
     }
+    free_order(remover);
+        
 
     return 0;
 }
